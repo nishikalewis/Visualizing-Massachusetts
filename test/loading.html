@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horizontal Loading Animation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="loading">
+        <ul>
+            <li class="img-bullet"><img src="UA.png" alt="Dummy Image 1"></li>
+            <li class="img-bullet"><img src="UB.png" alt="Dummy Image 2"></li>
+            <li class="img-bullet"><img src="UD.png" alt="Dummy Image 3"></li>
+            <li class="img-bullet"><img src="UL.png" alt="Dummy Image 4"></li>
+        </ul>
+    </div>
+    <div id="main-content" style="display:none;">
+        <h1 style="font-family: Helvetica; text-align: center;">Best UMass Campus to Work For?</h1>
+        <p>This is the actual information after the loading sequence.</p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
