@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diversity Donut Chart</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        #donut-chart {
+            width: 100%;
+            height: 600px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="donut-chart"></div>
+    <script>
+        // Data for the donut chart
+        const labels = ['Minority-owned', 'Immigrant-owned', 'Veteran-owned', 'N/A'];
+        const values = [164, 48, 4, 2];
+        const colors = ['#a6cee3', '#b2df8a', '#fb9a99', '#fdbf6f'];
+
+        const data = [{
+            type: 'pie',
+            labels: labels,
+            values: values,
+            hole: 0.4,
+            textinfo: 'label+percent',
+            hoverinfo: 'label+percent+value',
+            marker: { colors: colors },
+            sort: false
+        }];
+
+        // Layout for the donut chart
+        const layout = {
+            title: 'Diversity Breakdown of Businesses',
+            annotations: [{
+                font: { size: 20 },
+                showarrow: false,
+                text: 'Diversity',
+                x: 0.5,
+                y: 0.5
+            }],
+            showlegend: true
+        };
+
+        // Initialize the plot
+        Plotly.newPlot('donut-chart', data, layout);
+
+        // Animate the filling of the donut chart
+        let currentValue = 0;
+        const totalValue = values.reduce((a, b) => a + b, 0);
+        const increment = 1;
+
+        function animate() {
+            if (currentValue < totalValue) {
+                currentValue += increment;
+                const currentValues = values.map(value => Math.min(value, currentValue));
+
+                Plotly.animate('donut-chart', {
+                    data: [{ values: currentValues }],
+                    traces: [0],
+                    layout: {}
+                }, {
+                    transition: { duration: 50 },
+                    frame: { duration: 50, redraw: true }
+                });
+
+                requestAnimationFrame(animate);
+            } else {
+                // Ensure the final state is displayed correctly
+                Plotly.animate('donut-chart', {
+                    data: [{ values: values }],
+                    traces: [0],
+                    layout: {}
+                }, {
+                    transition: { duration: 50 },
+                    frame: { duration: 50, redraw: true }
+                });
+            }
+        }
+
+        // Start the animation
+        requestAnimationFrame(animate);
+    </script>
+</body>
+
+</html>
