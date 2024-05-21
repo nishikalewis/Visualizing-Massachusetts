@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Women Owned Businesses:Boston</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        #start-animation {
+            display: inline-block;
+            margin: 20px auto 0;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: black;
+            background-color: #F9E5FF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        #start-animation:hover {
+            background-color: #e1ccf1;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            margin-left: auto;
+        }
+
+        .dropbtn {
+            background-color: #F9E5FF;
+            color: black;
+            padding: 15px 30px;
+            /* Increased size */
+            font-size: 18px;
+            /* Increased font size */
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            /* Smaller font size for dropdown items */
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown:hover .dropbtn {
+            background-color: #e1ccf1;
+        }
+
+        body {
+            scroll-behavior: smooth;
+        }
+
+        .fade-in {
+            animation: fadeIn 2s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header id="mainHeader">
+        <span>Where Women Lead</span>
+        <img src="logo.png" alt="Logo" id="logo">
+        <div class="dropdown">
+            <button class="dropbtn">Download Dataset</button>
+            <div class="dropdown-content">
+                <a href="cleaned_dataset.csv" download>Cleaned Dataset</a>
+                <a href="original_dataset.csv" download>Original Dataset</a>
+            </div>
+        </div>
+    </header>
+    <div class="content">
+        <h1>She Means Business: Exploring Boston's Women-driven Enterprises</h1>
+        <div class="image-container">
+            <img src="Rosie the Riveter Illustration.gif" alt="Rosie the Riveter Illustration"
+                class="content-image first-image">
+        </div>
+        <p>Exploring the landscape of women-owned businesses in Boston, this project dives into data from Women
+            Entrepreneurs Boston (WE BOS), showcasing their spread, online presence, and diverse ownership.</p>
+        <h2>Nearly 40% of Boston's Women-Owned Businesses Focus on Professional, Scientific, and Technical Services</h2>
+        <div class="image-container second-image-container">
+            <img src="Business types.gif" alt="Business types break down" class="content-image second-image">
+        </div>
+        <h2>Neighborhood with the Most Packed Business Scene</h2>
+        <div class="image-container second-image-container">
+            <img src="Map.png" alt="Neighborhood with the Most Packed Business Scene"
+                class="content-image second-image">
+        </div>
+        <div id="bar-race" style="width: 100%; height: 600px; margin-top: 40px;" class="fade-in"></div>
+        <div class="image-container second-image-container">
+            <img src="Online presence.gif" alt="Online presence" class="content-image second-image">
+        </div>
+        <p>8 out of 10 women-owned businesses in Boston are already rocking the online world. That means more customers
+            are finding them, and their businesses are growing. Just sayin', if you're a business owner, having an
+            online
+            presence these days is kind of a big deal.</p>
+        <h2>The Powerhouse: Minority Women Shaping Boston's Business Landscape!</h2>
+        <div id="donut-chart" class="fade-in"></div>
+        <button id="start-animation">Start Animation with Sound</button>
+        <div class="image-container second-image-container"></div>
+        <img src="Diversity.png" alt="Diversity Image" class="content-image second-image" style="margin-top: 20px;">
+    </div>
+    <audio id="chart-sound" src="winning.mp3"></audio>
+    </div>
+    <script src="script.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script>
+        // Data for the bar race
+        const neighborhoods = [
+            "Dorchester", "Back Bay/Beacon Hill", "Central Boston", "Roxbury",
+            "Roslindale", "South Boston", "South End", "Hyde Park", "Jamaica Plain",
+            "Mattapan", "West Roxbury", "Fenway/Kenmore", "Allston/Brighton", "Brockton",
+            "Medford", "Melrose", "Milton", "Cambridge", "Somerville", "Quincy",
+            "Brookline", "Malden", "East Boston", "Everett", "Charlestown", "Randolph",
+            "Hanover", "Revere", "Braintree", "North Easton", "Middleboro", "Winthrop"
+        ];
+
+        const percentages = [
+            13.82, 11.64, 10.91, 8.00, 5.45, 5.09, 4.73, 4.73, 4.36,
+            3.27, 2.55, 2.55, 2.55, 2.18, 2.18, 1.82, 1.82, 1.82, 1.45,
+            1.45, 1.09, 1.09, 1.09, 0.73, 0.73, 0.73, 0.36, 0.36, 0.36,
+            0.36, 0.36, 0.36
+        ];
+
+        // Function to update the plot
+        function updatePlot(frame) {
+            const sortedData = frame.map((value, index) => [neighborhoods[index], value])
+                .sort((a, b) => b[1] - a[1]);
+
+            const sortedNeighborhoods = sortedData.map(item => item[0]);
+            const sortedPercentages = sortedData.map(item => item[1]);
+
+            Plotly.update('bar-race', {
+                x: [sortedPercentages],
+                y: [sortedNeighborhoods],
+                text: [sortedPercentages.map(String)],
+                textposition: 'outside'
+            });
+        }
+
+        // Initial plot setup
+        Plotly.newPlot('bar-race', [{
+            type: 'bar',
+            x: percentages,
+            y: neighborhoods,
+            orientation: 'h',
+            text: percentages.map(String),
+            textposition: 'outside',
+            marker: {
+                color: '#FFDE59'
+            }
+        }], {
+            title: 'Neighborhood Percentage Bar Race',
+            xaxis: { title: 'Percentage' },
+            yaxis: { title: 'Neighborhood', autorange: 'reversed' },
+            margin: { l: 150 }, // Increased left margin
+            showlegend: false,
+            font: {
+                family: 'Inter, sans-serif'
+            }
+        });
+
+        // Simulate the bar race
+        let frame = percentages.map(p => p / 20); // start with lower values for the animation effect
+        const totalFrames = 20;
+        const interval = 200;
+
+        function animate() {
+            let currentFrame = 0;
+            const intervalId = setInterval(() => {
+                if (currentFrame < totalFrames) {
+                    frame = frame.map((value, index) => Math.min(percentages[index], value + percentages[index] / totalFrames));
+                    updatePlot(frame);
+                    currentFrame++;
+                } else {
+                    clearInterval(intervalId);
+                }
+            }, interval);
+        }
+
+        const observerBarRace = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animate();
+                    observerBarRace.unobserve(entry.target);
+                }
+            });
+        });
+
+        observerBarRace.observe(document.getElementById('bar-race'));
+    </script>
+    <script>
+        // Data for the donut chart
+        const labels = ['Minority-owned', 'Immigrant-owned', 'Veteran-owned', 'N/A'];
+        const values = [164, 48, 4, 2];
+        const colors = ['#a6cee3', '#b2df8a', '#fb9a99', '#fdbf6f'];
+
+        const data = [{
+            type: 'pie',
+            labels: labels,
+            values: values,
+            hole: 0.4,
+            textinfo: 'label+percent',
+            hoverinfo: 'label+percent+value',
+            marker: { colors: colors },
+            sort: false
+        }];
+
+        const layout = {
+            title: 'Diversity Breakdown of Businesses',
+            annotations: [{
+                font: { size: 20 },
+                showarrow: false,
+                text: 'Diversity',
+                x: 0.5,
+                y: 0.5
+            }],
+            showlegend: true,
+            font: {
+                family: 'Inter, sans-serif' // Set the font to Inter
+            }
+        };
+
+        // Initialize the plot
+        Plotly.newPlot('donut-chart', data, layout);
+
+        // Add sound element
+        const chartSound = document.getElementById('chart-sound');
+
+        // Animate the filling of the donut chart
+        let currentValue = 0;
+        const totalValue = values.reduce((a, b) => a + b, 0);
+        const increment = 1;
+
+        function animateDonutChart() {
+            if (currentValue === 0) {
+                chartSound.play(); // Play sound when animation starts
+            }
+            if (currentValue < totalValue) {
+                currentValue += increment;
+                const currentValues = values.map(value => Math.min(value, currentValue));
+
+                Plotly.animate('donut-chart', {
+                    data: [{
+                        values: currentValues
+                    }],
+                    traces: [0],
+                    layout: {}
+                }, {
+                    transition: {
+                        duration: 50
+                    },
+                    frame: {
+                        duration: 50,
+                        redraw: true
+                    }
+                });
+
+                requestAnimationFrame(animateDonutChart);
+            } else {
+                // Ensure the final state is displayed correctly
+                Plotly.animate('donut-chart', {
+                    data: [{
+                        values: values
+                    }],
+                    traces: [0],
+                    layout: {}
+                }, {
+                    transition: {
+                        duration: 50
+                    },
+                    frame: {
+                        duration: 50,
+                        redraw: true
+                    }
+                });
+            }
+        }
+
+        const observerDonutChart = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateDonutChart();
+                    observerDonutChart.unobserve(entry.target);
+                }
+            });
+        });
+
+        observerDonutChart.observe(document.getElementById('donut-chart'));
+    </script>
+</body>
+
+</html>
